@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code使用技巧 - 个人知识库</title>
+    <style>
+        /* 全局样式 - 与首页保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 英雄区域 */
+         .hero {
+    background: url('images/hero-bg2.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative; /* 添加这行，为遮罩层做准备 */
+}
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* 技巧卡片样式 */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .skill-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid #0078d7;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: #0078d7;
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+        }
+        
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .card-body.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .skill-list .icon {
+            color: var(--accent-color);
+            margin-right: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .skill-content {
+            flex-grow: 1;
+        }
+        
+        .skill-content strong {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: var(--secondary-color);
+        }
+        
+        .skill-content p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        /* 快捷键表格 */
+        .shortcuts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .shortcuts-table th, .shortcuts-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .shortcuts-table th {
+            background-color: #0078d7;
+            color: white;
+        }
+        
+        .shortcuts-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .shortcuts-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .shortcut-key {
+            display: inline-block;
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 0 0.2rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* 插件推荐区域 */
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .plugin-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .plugin-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .plugin-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #0078d7;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.8rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .plugins-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .shortcuts-table {
+                font-size: 0.9rem;
+            }
+            
+            .shortcuts-table th, .shortcuts-table td {
+                padding: 0.8rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">个人<span>知识库</span></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="vscode.html" style="color: var(--primary-color);">VS Code技巧</a></li>
+                    <li><a href="photoshop.html">PS技巧</a></li>
+                    <li><a href="figma.html">Figma技巧</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>VS Code 使用技巧</h1>
+            <p>掌握这些高效技巧，极大提升你的编码效率和工作流程</p>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="container">
+        <!-- 编辑技巧部分 -->
+        <section class="content-section">
+            <h2 class="section-title">高效编辑技巧</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>多光标编辑</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Alt+点击</strong>
+                                    <p>在多个位置添加光标，实现同时编辑</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+D</strong>
+                                    <p>选择下一个相同的单词，可连续使用选择多个</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+Shift+L</strong>
+                                    <p>选择所有当前选中的单词</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+Alt+↑/↓</strong>
+                                    <p>在上方或下方添加光标</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>代码导航</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+G</strong>
+                                    <p>快速跳转到指定行</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+P</strong>
+                                    <p>快速打开文件</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Ctrl+Shift+O</strong>
+                                    <p>跳转到文件中的符号（函数、类等）</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>F12</strong>
+                                    <p>跳转到定义</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Alt+←/→</strong>
+                                    <p>在编辑历史中前进或后退</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>Emmet 缩写</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>快速生成HTML结构</strong>
+                                    <p>使用Emmet缩写快速生成HTML代码</p>
+                                    <div class="code-example">
+                                        ul>li*5>a{Item $}
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>CSS缩写</strong>
+                                    <p>使用Emmet快速编写CSS属性</p>
+                                    <div class="code-example">
+                                        m10 → margin: 10px;<br>
+                                        p20-30 → padding: 20px 30px;
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>Lorem Ipsum生成</strong>
+                                    <p>快速生成占位文本</p>
+                                    <div class="code-example">
+                                        lorem10 → 生成10个单词的占位文本
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快捷键部分 -->
+        <section class="content-section">
+            <h2 class="section-title">常用快捷键</h2>
+            <table class="shortcuts-table">
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>Windows/Linux</th>
+                        <th>macOS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>打开命令面板</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">Shift</span>+<span class="shortcut-key">P</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">Shift</span>+<span class="shortcut-key">P</span></td>
+                    </tr>
+                    <tr>
+                        <td>快速打开文件</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">P</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">P</span></td>
+                    </tr>
+                    <tr>
+                        <td>切换侧边栏</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">B</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">B</span></td>
+                    </tr>
+                    <tr>
+                        <td>集成终端</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">`</span></td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">`</span></td>
+                    </tr>
+                    <tr>
+                        <td>格式化文档</td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">Alt</span>+<span class="shortcut-key">F</span></td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">Option</span>+<span class="shortcut-key">F</span></td>
+                    </tr>
+                    <tr>
+                        <td>重命名符号</td>
+                        <td><span class="shortcut-key">F2</span></td>
+                        <td><span class="shortcut-key">F2</span></td>
+                    </tr>
+                    <tr>
+                        <td>注释切换</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">/</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">/</span></td>
+                    </tr>
+                    <tr>
+                        <td>复制行</td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">Alt</span>+<span class="shortcut-key">↓</span></td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">Option</span>+<span class="shortcut-key">↓</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 插件推荐部分 -->
+        <section class="content-section">
+            <h2 class="section-title">推荐插件</h2>
+            <div class="plugins-grid">
+                <div class="plugin-item">
+                    <div class="plugin-icon">🚀</div>
+                    <h3>Live Server</h3>
+                    <p>启动本地开发服务器，实现实时预览</p>
+                </div>
+                <div class="plugin-item">
+                    <div class="plugin-icon">✨</div>
+                    <h3>Prettier</h3>
+                    <p>代码自动格式化，保持代码风格统一</p>
+                </div>
+                <div class="plugin-item">
+                    <div class="plugin-icon">🔍</div>
+                    <h3>GitLens</h3>
+                    <p>增强Git功能，显示代码作者和修改历史</p>
+                </div>
+                <div class="plugin-item">
+                    <div class="plugin-icon">🎨</div>
+                    <h3>Bracket Pair Colorizer</h3>
+                    <p>为匹配的括号着色，提高代码可读性</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="vscode.html">VS Code技巧</a>
+                <a href="photoshop.html">PS技巧</a>
+                <a href="figma.html">Figma技巧</a>
+                <a href="about.html">关于</a>
+            </div>
+            <p>&copy; 2025 个人知识库 | 网络与新媒体专业</p>
+        </div>
+    </footer>
+
+    <script>
+        // 卡片折叠/展开功能
+        function toggleCard(header) {
+            const cardBody = header.nextElementSibling;
+            const toggleIcon = header.querySelector('.toggle-icon');
+            
+            cardBody.classList.toggle('collapsed');
+            
+            if (cardBody.classList.contains('collapsed')) {
+                toggleIcon.textContent = '▶';
+            } else {
+                toggleIcon.textContent = '▼';
+            }
+        }
+        
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 卡片悬停效果增强
+        document.querySelectorAll('.skill-card, .plugin-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,2599 +3,475 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>千万点击，解码三星堆面具破圈之路</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.0.0/dist/echarts-wordcloud.min.js"></script>
+    <title>个人知识库 - 网络与新媒体</title>
     <style>
-        :root {
-            --primary-bg: #0a0a14;
-            --secondary-bg: #1a1a2e;
-            --accent-gold: #d4af37;
-            --accent-bronze: #78866b;
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-        }
-        
+        /* 全局样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
         
         body {
-            font-family: 'Noto Serif SC', serif;
-            background-color: var(--primary-bg);
-            color: var(--text-primary);
+            background-color: #f9f9f9;
+            color: #333;
             line-height: 1.6;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
         }
         
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
         
-        /* 开场：任务简报 */
-        #briefing {
-            height: 100vh;
-            position: relative;
+        /* 导航栏样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.2) 0%,
-                rgba(0, 0, 0, 0.4) 100%
-            );
-        }
-
-        #image-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 1;
-            z-index: -1;
         }
         
-        .briefing-content {
-            text-align: center;
-            z-index: 2;
-            max-width: 800px;
-            padding: 20px;
+        .logo span {
+            color: var(--primary-color);
         }
         
-        .title {
-            font-size: 3.8rem;
-            margin-bottom: 20px;
-            color: var(--accent-gold);
-            text-shadow: 
-                0 0 10px rgba(212, 175, 55, 0.5),
-                2px 2px 4px rgba(0, 0, 0, 0.3);
-            font-family: 'ZCOOL XiaoWei', serif;
-            letter-spacing: 3px;
-            line-height: 1.1;
-            font-weight: normal;
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            padding: 0.5rem 0;
             position: relative;
-        }
-
-        
-        .subtitle {
-            font-size: 1.6rem;
-            margin-bottom: 40px;
-            color: var(--text-secondary);
-            font-family: 'Ma Shan Zheng', cursive;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+            transition: var(--transition);
         }
         
-        .typewriter {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            min-height: 120px;
-            border-left: 3px solid var(--accent-gold);
-            padding-left: 20px;
-            text-align: left;
-            line-height: 1.6;
-            color: var(--text-secondary);
+        .nav-links a:hover {
+            color: var(--primary-color);
         }
         
-        .start-btn {
-            background: transparent;
-            color: var(--accent-gold);
-            border: 2px solid var(--accent-gold);
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .start-btn:hover {
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
-        }
-        
-        /* 第一幕：初识"当事人" */
-        #artifact-intro {
-            padding: 100px 0;
-            background: url('images/bg.jpg') center/cover no-repeat;
-            position: relative;
-        }
-
-        #artifact-intro::before {
+        .nav-links a::after {
             content: '';
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 0;
         }
-
-        #artifact-intro .container {
-            position: relative;
-            z-index: 1;
+        
+        /* 英雄区域 */
+       .hero {
+    background: url('images/hero-bg.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative; /* 添加这行，为遮罩层做准备 */
+}
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
         }
-
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #16a085;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            margin-bottom: 5rem;
+        }
         
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            color: var(--accent-gold);
-        }
-        
-        .artifact-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .artifact-image {
-            flex: 1;
-            min-width: 300px;
+            margin-bottom: 3rem;
+            color: var(--secondary-color);
             position: relative;
+            padding-bottom: 1rem;
         }
         
-        .artifact-img {
-            width: 100%;
-            border: 3px solid var(--accent-bronze);
-            border-radius: 5px;
-            box-shadow: 0 0 30px rgba(120, 134, 107, 0.4);
-        }
-        
-        .hotspot {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: rgba(212, 175, 55, 0.3);
-            border: 2px solid var(--accent-gold);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .hotspot:hover {
-            background: rgba(212, 175, 55, 0.6);
-            transform: scale(1.2);
-        }
-        
-        .hotspot-detail {
-            display: none;
-            position: absolute;
-            background: rgba(26, 26, 46, 0.95);
-            border: 1px solid var(--accent-gold);
-            padding: 15px;
-            border-radius: 5px;
-            width: 250px;
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-        
-        .artifact-info {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-        }
-        
-        .info-item {
-            margin-bottom: 25px;
-            padding-left: 20px;
-            border-left: 2px solid var(--accent-bronze);
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-        
-        .info-item:hover {
-            border-left: 2px solid var(--accent-gold);
-            transform: translateX(5px);
-        }
-        
-        .info-title {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-        }
-        
-        /* 第二幕：还原"案发现场" */
-        #timeline {
-            padding: 100px 0;
-            background: url('images/bg.jpg') center/cover no-repeat;
-            position: relative;
-        }
-
-        #timeline::before {
+        .section-title::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 0;
-        }
-
-        #timeline .container {
-            position: relative;
-            z-index: 1;
-        }
-
-
-        
-        .timeline-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .timeline-container::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background: var(--accent-bronze);
-            top: 0;
             bottom: 0;
             left: 50%;
-            margin-left: -2px;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
         }
         
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            margin-bottom: 80px;
-        }
-        
-        .timeline-item:nth-child(odd) {
-            left: 0;
-        }
-        
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
-        
-        .timeline-content {
-            padding: 20px;
-            background: var(--secondary-bg);
-            border-radius: 8px;
-            border-left: 4px solid var(--accent-gold);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .timeline-date {
-            font-weight: bold;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-        }
-        
-        .timeline-chart {
-            height: 150px;
-            margin-top: 15px;
-        }
-        
-        /* 时间轴图片样式 */
-        .timeline-image {
-            position: absolute;
-            width: 280px;
-            height: 180px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s ease;
-            z-index: 5;
-            border: 2px solid var(--accent-gold);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 25px rgba(212, 175, 55, 0.3);
-            background: var(--primary-bg);
-        }
-
-        .timeline-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* 左侧时间轴节点的图片位置 - 放在右侧 */
-        .timeline-item:nth-child(odd) .timeline-image {
-            left: calc(50% + 300px);
-            top: 50%;
-            transform: translateY(-50%) scale(0.9);
-        }
-
-        /* 右侧时间轴节点的图片位置 - 放在左侧 */
-        .timeline-item:nth-child(even) .timeline-image {
-            right: calc(50% + 300px);
-            top: 50%;
-            transform: translateY(-50%) scale(0.9);
-        }
-
-        /* 鼠标悬停时显示图片 */
-        .timeline-item:hover .timeline-image {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) scale(1);
-        }
-        
-        /* 第三&四幕：数据分析与破圈密码 */
-        #data-analysis {
-            padding: 100px 0;
-            background: url('images/bg.jpg') center/cover no-repeat;
-            position: relative;
-        }
-
-        #data-analysis::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
-        }
-
-        #data-analysis .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .tab-btn {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
-        }
-        
-        .tab-btn.active {
-            color: var(--accent-gold);
-            border-bottom: 2px solid var(--accent-gold);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .chart-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .password-analysis .chart-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .password-analysis .info-item {
-            flex: 1;
-            min-width: 300px;
-            max-width: calc(33.333% - 20px);
-        }
-        
-        .chart {
-            flex: 1;
-            min-width: 300px;
-            height: 300px;
-            background: var(--primary-bg);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* 用户画像部分样式 */
-        .user-profile-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .user-profile-chart {
-            flex: 1;
-            min-width: 300px;
-            height: 400px;
-            background: var(--primary-bg);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .user-profile-text {
-            flex: 1;
-            min-width: 300px;
-            height: 400px;
-            background: var(--primary-bg);
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            overflow-y: auto;
-        }
-        
-        .user-profile-title {
-            font-size: 1.5rem;
-            color: var(--accent-gold);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--accent-gold);
-            padding-bottom: 10px;
-        }
-        
-        .user-profile-content {
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-        
-        .user-profile-content p {
-            margin-bottom: 15px;
-        }
-        
-        .user-profile-content ul {
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .user-profile-content li {
-            margin-bottom: 8px;
-        }
-        
-        /* 数据表格 */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-            background: var(--primary-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .data-table th {
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-        }
-        
-        .data-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        
-        .data-table tr:nth-child(even) {
-            background: rgba(26, 26, 46, 0.5);
-        }
-        
-        .data-table tr:hover {
-            background: rgba(212, 175, 55, 0.1);
-        }
-        
-        /* 补充表格样式 */
-        .supplement-table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        
-        .supplement-table th {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--accent-gold);
-            padding: 10px;
-            text-align: left;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-        }
-        
-        .supplement-table td {
-            padding: 10px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-        
-        .supplement-table tr:nth-child(even) {
-            background: rgba(26, 26, 46, 0.3);
-        }
-        
-        /* 文创产品展示 */
-        #cultural-products {
-            padding: 100px 0;
-            background: url('images/bg.jpg') center/cover no-repeat;
-            position: relative;
-        }
-
-        #cultural-products::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 0;
-        }
-
-        #cultural-products .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .products-grid {
+        /* 工具展示区域 */
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 2rem;
         }
         
-        .product-card {
-            background: var(--secondary-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .product-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-title {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-        }
-        
-        
-        /* 终幕：生成你的报告 */
-        #report {
-            padding: 100px 0;
-            background: url('images/bg.jpg') center/cover no-repeat;
-            position: relative;
-            min-height: 80vh;
-            display: block !important;
-        }
-
-        #report::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 0;
-        }
-
-        #report .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .report-container {
-            max-width: 800px;
-            margin: 0 auto;
+        .tool-item {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
             text-align: center;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-top: 4px solid var(--primary-color);
         }
         
-        .report-image {
-            width: 100%;
-            margin-bottom: 30px;
-            border: 2px solid var(--accent-bronze);
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(120, 134, 107, 0.3);
-            display: none;
+        .tool-item:nth-child(2) {
+            border-top-color: #31a8ff;
         }
         
-        .report-image.active {
-            display: block;
+        .tool-item:nth-child(3) {
+            border-top-color: #9d6bff;
         }
         
-        .report-btns {
+        .tool-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tool-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.8rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tool-item h3 {
+            margin-bottom: 1.2rem;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+        
+        .tool-item p {
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* 特色区域 */
+        .features {
+            background-color: var(--light-color);
+            padding: 5rem 0;
+            border-radius: 12px;
+            margin: 4rem 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-item h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-item h3 span {
+            margin-right: 0.7rem;
+            font-size: 1.8rem;
+        }
+        
+        .feature-item p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
+            margin: 1.5rem 0;
         }
         
-        .report-btn {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--accent-bronze);
-            padding: 12px 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .footer-links a {
+            color: white;
+            margin: 0 1.2rem;
+            text-decoration: none;
+            transition: var(--transition);
         }
         
-        .report-btn:hover {
-            background: var(--accent-bronze);
-            color: var(--primary-bg);
-        }
-        
-        .guardian-btn {
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .guardian-btn:hover {
-            background: #c19b2e;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        .footer-links a:hover {
+            color: var(--accent-color);
         }
         
         /* 响应式设计 */
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2.5rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .artifact-container {
-                flex-direction: column;
-            }
-            
-            .timeline-container::after {
-                left: 31px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item:nth-child(even) {
-                left: 0;
-            }
-            
-            .chart {
-                min-width: 100%;
-            }
-            
-            .user-profile-chart,
-            .user-profile-text {
-                min-width: 100%;
-                height: 350px;
-            }
-            
-            .products-grid {
+        @media (max-width: 992px) {
+            .tools-grid,
+            .feature-grid {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
             
-            .tab-btn {
-                padding: 10px 15px;
-                font-size: 1rem;
+            .tool-item,
+            .feature-item {
+                padding: 2rem 1.5rem;
             }
-            
-            .data-table {
-                font-size: 0.9rem;
-            }
-            
-            .data-table th, .data-table td {
-                padding: 8px 10px;
-            }
-            
-            /* 在移动设备上隐藏时间轴图片效果 */
-            .timeline-image {
-                display: none;
-            }
-            
-            /* 移动设备上恢复较窄的时间轴容器 */
-            .timeline-container {
-                max-width: 800px;
-            }
-            
-            .report-btns {
-                flex-direction: column;
-            }
-        }
-
-       /* 守护仪式弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 10, 20, 0.95);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, var(--secondary-bg) 0%, #2a2a4a 100%);
-            margin: 5% auto;
-            padding: 0;
-            border: 2px solid var(--accent-gold);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .modal-header {
-            background: rgba(212, 175, 55, 0.1);
-            padding: 20px;
-            border-bottom: 1px solid var(--accent-gold);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            color: var(--accent-gold);
-            margin: 0;
-            font-family: 'ZCOOL XiaoWei', serif;
-            font-size: 1.5rem;
-        }
-
-        .close {
-            color: var(--accent-gold);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close:hover {
-            color: #fff;
-            transform: scale(1.2);
-        }
-
-        .modal-body {
-            padding: 30px 20px;
-        }
-
-        .ritual-animation {
-            position: relative;
-            height: 150px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .bronze-pattern {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border: 3px solid var(--accent-gold);
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: rotate 20s linear infinite;
-        }
-
-        .bronze-pattern::before,
-        .bronze-pattern::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid var(--accent-bronze);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .bronze-pattern::after {
-            width: 80px;
-            height: 80px;
-            border-color: var(--accent-gold);
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .particle-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent-gold);
-            border-radius: 50%;
-            animation: float 3s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
-        }
-
-        .mask-icon {
-            font-size: 3rem;
-            z-index: 2;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .ritual-text {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .ritual-text h4 {
-            color: var(--accent-gold);
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            font-family: 'ZCOOL XiaoWei', serif;
-        }
-
-        .ritual-text p {
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-        }
-
-        .ritual-quote {
-            font-style: italic;
-            color: var(--accent-gold) !important;
-            margin-top: 10px !important;
-            font-size: 1.1rem;
-        }
-
-        .guardian-info {
-            background: rgba(10, 10, 20, 0.5);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        /* 修复：限定样式作用域，只影响守护仪式内的info-item */
-        .guardian-info .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .guardian-info .info-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .guardian-info .info-item .label {
-            color: var(--text-secondary);
-        }
-
-        .guardian-info .info-item .value {
-            color: var(--accent-gold);
-            font-weight: bold;
-        }
-
-        .modal-footer {
-            padding: 0 20px 20px;
-            text-align: center;
-        }
-
-        .ritual-confirm {
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-            border: none;
-            padding: 12px 40px;
-            font-size: 1.1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Noto Serif SC', serif;
-        }
-
-        .ritual-confirm:hover {
-            background: #c19b2e;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            transform: translateY(-2px);
         }
         
-        /* 文创产品弹窗样式 */
-        .product-modal {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 10, 20, 0.95);
-            backdrop-filter: blur(5px);
-        }
-
-        .product-modal-content {
-            background: linear-gradient(135deg, var(--secondary-bg) 0%, #2a2a4a 100%);
-            margin: 5% auto;
-            padding: 0;
-            border: 2px solid var(--accent-gold);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 800px;
-            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .product-modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        .product-modal-header {
-            background: rgba(212, 175, 55, 0.1);
-            padding: 20px;
-            border-bottom: 1px solid var(--accent-gold);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product-modal-header h3 {
-            color: var(--accent-gold);
-            margin: 0;
-            font-family: 'ZCOOL XiaoWei', serif;
-            font-size: 1.5rem;
-        }
-
-        .product-close {
-            color: var(--accent-gold);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .product-close:hover {
-            color: #fff;
-            transform: scale(1.2);
-        }
-
-        .product-modal-body {
-            padding: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .product-original-image {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .product-original-image img {
-            width: 100%;
-            border: 3px solid var(--accent-bronze);
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(120, 134, 107, 0.4);
-        }
-
-        .product-original-info {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .product-original-info h4 {
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            border-bottom: 1px solid var(--accent-bronze);
-            padding-bottom: 10px;
-        }
-
-        .product-original-info p {
-            margin-bottom: 15px;
-            line-height: 1.6;
-            color: var(--text-secondary);
-        }
-
-        .product-original-details {
-            margin-top: 20px;
-        }
-
-        .product-original-details .detail-item {
-            margin-bottom: 10px;
-            display: flex;
-        }
-
-        .product-original-details .detail-label {
-            color: var(--accent-gold);
-            min-width: 100px;
-            font-weight: bold;
-        }
-
-        .product-original-details .detail-value {
-            color: var(--text-secondary);
-            flex: 1;
-        }
-
-        .product-link {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            color: var(--accent-gold);
-            text-decoration: none;
-            border: 1px solid var(--accent-gold);
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .product-link:hover {
-            background: var(--accent-gold);
-            color: var(--primary-bg);
-        }
-
-        /* 响应式调整 */
         @media (max-width: 768px) {
-            .product-modal-body {
+            .navbar {
                 flex-direction: column;
             }
             
-            .product-original-image,
-            .product-original-info {
-                min-width: 100%;
+            .nav-links {
+                margin-top: 1rem;
             }
-        }
-
-        /* 新增：旭日图分类指示器样式 */
-        .category-indicators {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .category-indicator {
-            padding: 10px 20px;
-            background: rgba(26, 26, 46, 0.7);
-            border-radius: 20px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .category-indicator:hover {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--accent-gold);
-        }
-
-        .category-indicator.active {
-            background: rgba(212, 175, 55, 0.3);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-
-        /* 新增：数据亮点样式 */
-        .data-highlights {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .data-item {
-            flex: 1;
-            min-width: 200px;
-            background: rgba(10, 10, 20, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid var(--accent-bronze);
-        }
-
-        .data-value {
-            font-size: 2rem;
-            color: var(--accent-gold);
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .data-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            
+            .nav-links li {
+                margin: 0 0.8rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 开场：任务简报 -->
-    <section id="briefing">
-        <img id="image-bg" src="images/底图.jpg" alt="三星堆青铜面具背景">
-        <div class="overlay"></div>
-        <div class="briefing-content">
-           <h1 class="title">"千万点击"<br>解码三星堆面具破圈之路</h1>
-            <p class="subtitle">一场关于国宝如何成为"顶流"的数字探秘</p>
-            <div class="typewriter" id="typewriter-text"></div>
-            <button class="start-btn" id="start-btn">开始调查</button>
-        </div>
-    </section>
-
-    <!-- 第一幕：初识"当事人" -->
-    <section id="artifact-intro">
+    <!-- 导航栏 -->
+    <header>
         <div class="container">
-            <h2 class="section-title">初识"当事人"</h2>
-            <div class="artifact-container">
-                <div class="artifact-image">
-                    <img src="images/初识.jpg" alt="三星堆青铜面具" class="artifact-img">
-                </div>
-                
-                <div class="artifact-info">
-                    <div class="info-item">
-                        <h3 class="info-title">身份信息</h3>
-                        <p>名称：商大青铜面具</p>
-                        <p>年代：商代晚期（约公元前1600-前1046年）</p>
-                        <p>出土：四川广汉三星堆遗址二号祭祀坑</p>
-                    </div>
-                    
-                    <div class="info-item">
-                        <h3 class="info-title">体态特征</h3>
-                        <p>宽度：132cm</p>
-                        <p>高度：71cm</p>
-                        <p>纵深：90cm</p>
-                        <p>重量：131斤（65.5公斤）</p>
-                    </div>
-                    
-                    <div class="info-item">
-                        <h3 class="info-title">破圈指数</h3>
-                        <p>全网曝光量：10,000,000+</p>
-                        <p>互动讨论量：500,000+</p>
-                        <p>文创衍生品：1600+款</p>
-                    </div>
-                    
-                    <div class="info-item">
-                        <h3 class="info-title">工艺特点</h3>
-                        <p>采用分铸法成型，由面部、眼睛、耳朵等多部位分别铸造后组合成一体</p>
-                        <p>右侧眼部发现丝绸织物残留，反映了古蜀国与中原及周边文化的深入交流</p>
-                    </div>
-                </div>
-            </div>
+            <nav class="navbar">
+                <div class="logo">个人<span>知识库</span></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="vscode.html">VS Code技巧</a></li>
+                    <li><a href="photoshop.html">PS技巧</a></li>
+                    <li><a href="figma.html">Figma技巧</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </nav>
         </div>
-    </section>
+    </header>
 
-    <!-- 第二幕：还原"案发现场" -->
-    <section id="timeline">
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
         <div class="container">
-            <h2 class="section-title">还原"案发现场"</h2>
-            
-            <div class="timeline-container">
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2021年3月</div>
-                        <h3>惊世出土</h3>
-                        <p>三星堆遗址新一轮考古发掘成果公布，青铜面具作为代表性文物首次亮相，引发媒体广泛报道。</p>
-                        <p>3月27日当天超9000人入馆参观，是平常周末的4倍以上，门票收入达51万元创馆史第二高。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-1.jpg" alt="2021年3月出土现场">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2021年6月</div>
-                        <h3>央视直播</h3>
-                        <p>央视新闻推出《三星堆新发现》直播特别节目，连续数天直播考古发掘过程，观看量超千万。</p>
-                        <p>青铜大面具从三号"祭祀坑"提取，其上被象牙所压，文保人员开始提取面具进行分析研究。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-2.jpg" alt="2021年6月央视直播">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022年1月</div>
-                        <h3>春晚亮相</h3>
-                        <p>三星堆青铜大面具登上央视春节联欢晚会，舞蹈《金面》演绎浪漫神话，话题阅读量超3亿。</p>
-                        <p>微博话题#三星堆青铜大面具惊艳亮相春晚#引发热议，一眼三千年的震撼感染全国观众。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-3.jpg" alt="2022年1月春晚亮相">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022年2月</div>
-                        <h3>首次展出</h3>
-                        <p>青铜大面具在三星堆博物馆文物保护与修复馆首次正式展出，吸引大量游客参观。</p>
-                        <p>2022年春节黄金周，三星堆博物馆接待游客83707人次，文创销售收入同比增长339.01%。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-4.jpg" alt="2022年2月首次展出">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023年9月</div>
-                        <h3>香港特展</h3>
-                        <p>青铜大面具在香港故宫文化博物馆"凝视三星堆——四川考古新发现"特展中展出，系三星堆新出土文物首次在四川外展出。</p>
-                        <p>展览吸引众多香港市民和游客，进一步扩大了三星堆文化的国际影响力。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-5.jpg" alt="2023年9月香港特展">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年</div>
-                        <h3>文创销售新高</h3>
-                        <p>三星堆文创产品突破1600种，单日销售额达到60万元左右，创下新的销售纪录。</p>
-                        <p>暑期文创销售迎来高峰期，青铜小人麻将礼盒、神树摆件等产品深受游客喜爱。</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-6.jpg" alt="2024年文创销售">
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025年</div>
-                        <h3>研究突破</h3>
-                        <p>在"2025三星堆论坛"上公布多项重大研究成果，包括：证实三星堆存在大量彩绘青铜器，</p>
-                        <p>将中国彩绘青铜器的历史提前近千年；精确测定多个祭祀坑埋藏于商代晚期等</p>
-                    </div>
-                    <div class="timeline-image">
-                        <img src="images/timeline-7.jpg" alt="2025年国际巡展计划">
-                    </div>
-                </div>
-            </div>
+            <h1>个人知识库</h1>
+            <p>网络与新媒体专业 | 软件使用技巧与工作流整理</p>
+            <p>汇集了VS Code、Photoshop和Figma等核心工具的高效使用技巧</p>
+            <a href="#tools" class="btn">探索工具</a>
         </div>
     </section>
 
-    <!-- 第三&四幕：数据分析与破圈密码 -->
-    <section id="data-analysis">
+    <!-- 主要内容区域 -->
+    <main class="container">
+        <!-- 工具介绍 -->
+        <section class="content-section" id="tools">
+            <h2 class="section-title">核心工具介绍</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem; color: #666;">
+                这里汇集了网络与新媒体专业学习中最核心的软件工具，每个工具都有详细的使用技巧和优化建议，帮助你提高工作效率。
+            </p>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-icon">💻</div>
+                    <h3>Visual Studio Code</h3>
+                    <p>一款轻量级但功能强大的源代码编辑器，支持多种编程语言和丰富的扩展生态系统。通过高效快捷键、智能代码补全和集成终端，极大提升前端开发和网页设计效率。</p>
+                    <a href="vscode.html" class="btn">学习使用技巧</a>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">🎨</div>
+                    <h3>Adobe Photoshop</h3>
+                    <p>业界领先的图像编辑和设计软件，提供强大的图像处理能力和丰富的设计工具。从基础的照片修饰到复杂的视觉设计，满足各种创意需求。</p>
+                    <a href="photoshop.html" class="btn">学习使用技巧</a>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">🌐</div>
+                    <h3>Figma</h3>
+                    <p>基于浏览器的协作式UI设计工具，支持实时协作和原型设计。是现代UI/UX设计的流行选择，特别适合团队协作和响应式设计项目。</p>
+                    <a href="figma.html" class="btn">学习使用技巧</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色区域 -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">知识库特色</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3><span>✅</span> 实用技巧</h3>
+                        <p>所有技巧都经过实践验证，直接应用于日常工作和学习场景，帮助你快速解决问题，提高工作效率。</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3><span>🔄</span> 持续更新</h3>
+                        <p>随着软件版本更新和工作流程优化，知识库内容会定期更新，确保信息的时效性和准确性。</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3><span>🎯</span> 专业聚焦</h3>
+                        <p>专注于网络与新媒体专业所需工具和技能，内容更加贴合专业学习需求，帮助你在专业领域快速成长。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
         <div class="container">
-            <h2 class="section-title">数据分析与破圈密码</h2>
-            
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="tab-1">破圈密码</button>
-                <button class="tab-btn" data-tab="tab-2">用户画像</button>
-                <button class="tab-btn" data-tab="tab-3">文创经济</button>
-                <button class="tab-btn" data-tab="tab-4">数据档案</button>
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="vscode.html">VS Code技巧</a>
+                <a href="photoshop.html">PS技巧</a>
+                <a href="figma.html">Figma技巧</a>
+                <a href="about.html">关于</a>
             </div>
-            
-            <div class="tab-content active" id="tab-1">
-                <div class="chart-container">
-                    <div class="chart" id="platform-chart"></div>
-                    <div class="chart" id="wordcloud-chart"></div>
-                </div>
-                
-                <div class="password-analysis">
-                    <h3 style="text-align: center; margin-bottom: 30px; color: var(--accent-gold);">三大破圈密码解析</h3>
-                    
-                    <div class="chart-container">
-                        <div class="info-item">
-                            <h3 class="info-title">密码一：神秘感</h3>
-                            <p>超清镜头下的极致细节，颠覆想象的设计造型，引发关于"外星文明"的广泛讨论，占比35%。</p>
-                            <p>网友评论："救命！这文物出土时像极了周一开会的我…"，"古蜀人的精神状态领先人类文明！"</p>
-                        </div>
-                        
-                        <div class="info-item">
-                            <h3 class="info-title">密码二：文化自豪</h3>
-                            <p>"老祖宗的审美"、"中华文明多元一体"等话题激发民族自豪感，成为传播核心动力，占比42%。</p>
-                            <p>《不止考古·我与三星堆》纪录片用轻松幽默的方式展示考古工作，吸引年轻观众。</p>
-                        </div>
-                        
-                        <div class="info-item">
-                            <h3 class="info-title">密码三：趣味互动</h3>
-                            <p>表情包、文创产品、特效滤镜等降低参与门槛，让文物走进日常生活，占比23%。</p>
-                            <p>青铜小人麻将礼盒、神树摆件等文创产品深受欢迎，让古老文明焕发文旅新活力。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="tab-2">
-                <!-- 新增：数据亮点区域 -->
-                <div class="data-highlights">
-                    <div class="data-item">
-                        <div class="data-value">77%</div>
-                        <div class="data-label">35岁以下用户</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-value">64%</div>
-                        <div class="data-label">一线及新一线城市</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-value">42%</div>
-                        <div class="data-label">关注考古过程</div>
-                    </div>
-                </div>
-                
-                <div class="user-profile-container">
-                    <div class="user-profile-chart" id="sunburst-chart"></div>
-                    <div class="user-profile-text" id="user-profile-text">
-                        <h3 class="user-profile-title">三星堆关注者深度画像</h3>
-                        <div class="user-profile-content">
-                            <p>点击图表不同区域查看详细分析</p>
-                            <div class="profile-item">
-                                <h4>核心特征</h4>
-                                <p id="selected-category">请点击图表区域查看</p>
-                                <p id="selected-value">-</p>
-                                <p id="selected-insight">-</p>
-                            </div>
-                            
-                            <div class="profile-item">
-                                <h4>行为特点</h4>
-                                <p id="behavior-1">• 偏好短视频内容 (45%)</p>
-                                <p id="behavior-2">• 热衷互动讨论 (32%)</p>
-                                <p id="behavior-3">• 关注考古过程 (42%)</p>
-                            </div>
-                            
-                            <div class="profile-item">
-                                <h4>消费特征</h4>
-                                <p id="consumption-1">• 文创产品购买率: 28%</p>
-                                <p id="consumption-2">• 年均文化消费: ¥800+</p>
-                                <p id="consumption-3">• 社交媒体分享率: 65%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 新增：分类指示器 -->
-                <div class="category-indicators">
-                    <div class="category-indicator" data-category="age">年龄分布</div>
-                    <div class="category-indicator" data-category="region">地域分布</div>
-                    <div class="category-indicator" data-category="content">内容偏好</div>
-                    <div class="category-indicator" data-category="platform">平台偏好</div>
-                </div>
-            </div>
-                
-               
-            <div class="tab-content" id="tab-3">
-                <div class="chart-container">
-                    <div class="chart" id="sales-chart"></div>
-                    <div class="chart" id="product-chart"></div>
-                </div>
-                
-                <div class="password-analysis">
-                    <h3 style="text-align: center; margin-bottom: 30px; color: var(--accent-gold);">文创经济数据分析</h3>
-                    
-                    <div class="chart-container">
-                        <div class="info-item">
-                            <h3 class="info-title">销售表现</h3>
-                            <p>三星堆文创商品突破1600种，单日销售额达到60万元左右。</p>
-                            <p>2024年四川各类博物馆新开发文创产品超11329种，收入超4亿元位居全国第四。</p>
-                        </div>
-                        
-                        <div class="info-item">
-                            <h3 class="info-title">热门产品</h3>
-                            <p>青铜小人麻将礼盒、神树摆件、面具冰淇淋等产品深受游客喜爱。</p>
-                            <p>被网友戏称为"火锅之源"的陶三足炊器等特色文物吸引众多游客纷至沓来。</p>
-                        </div>
-                        
-                        <div class="info-item">
-                            <h3 class="info-title">文旅带动</h3>
-                            <p>三星堆博物馆新馆内，游客驻足于这些遗珍前，感受古蜀文明深邃而独特的魅力。</p>
-                            <p>古老文明焕发文旅新活力，成为文旅和文创领域的热点，也推动了相关产业的发展。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="tab-4">
-                <h3 style="text-align: center; margin-bottom: 30px; color: var(--accent-gold);">三星堆青铜面具关键数据统计</h3>
-                
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>时间节点</th>
-                            <th>关键事件</th>
-                            <th>数据指标</th>
-                            <th>影响力</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2021年3月</td>
-                            <td>三星堆新一轮考古成果公布</td>
-                            <td>单日参观人数9000+，门票收入51万元</td>
-                            <td>媒体关注度增长400%</td>
-                        </tr>
-                        <tr>
-                            <td>2021年6月</td>
-                            <td>央视《三星堆新发现》直播</td>
-                            <td>累计观看量超1000万</td>
-                            <td>社交媒体话题阅读量2.3亿</td>
-                        </tr>
-                        <tr>
-                            <td>2022年1月</td>
-                            <td>央视春晚亮相</td>
-                            <td>微博话题阅读量3.5亿+</td>
-                            <td>收视率21.93%，全网曝光超5亿</td>
-                        </tr>
-                        <tr>
-                            <td>2022年2月</td>
-                            <td>首次正式展出</td>
-                            <td>春节黄金周接待游客83707人次</td>
-                            <td>文创收入同比增长339.01%</td>
-                        </tr>
-                        <tr>
-                            <td>2023年9月</td>
-                            <td>香港故宫特展</td>
-                            <td>展览参观人数超30万</td>
-                            <td>国际媒体关注度显著提升</td>
-                        </tr>
-                        <tr>
-                            <td>2024年至今</td>
-                            <td>文创产品销售</td>
-                            <td>文创产品1600+种，单日销售额60万元</td>
-                            <td>带动四川文博文创收入超4亿元</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 style="text-align: center; margin: 50px 0 20px; color: var(--accent-gold);">三星堆文创产品销量排行</h3>
-                
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>产品名称</th>
-                            <th>类别</th>
-                            <th>价格区间</th>
-                            <th>受欢迎度</th>
-                            <th>销量占比</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>青铜小人麻将礼盒</td>
-                            <td>娱乐产品</td>
-                            <td>200-300元</td>
-                            <td>极高</td>
-                            <td>18%</td>
-                        </tr>
-                        <tr>
-                            <td>神树摆件</td>
-                            <td>家居装饰</td>
-                            <td>150-250元</td>
-                            <td>高</td>
-                            <td>15%</td>
-                        </tr>
-                        <tr>
-                            <td>面具冰淇淋</td>
-                            <td>食品</td>
-                            <td>15-25元</td>
-                            <td>极高</td>
-                            <td>22%</td>
-                        </tr>
-                        <tr>
-                            <td>青铜面具书签</td>
-                            <td>文具</td>
-                            <td>20-40元</td>
-                            <td>中</td>
-                            <td>12%</td>
-                        </tr>
-                        <tr>
-                            <td>三星堆元素T恤</td>
-                            <td>服饰</td>
-                            <td>80-120元</td>
-                            <td>中</td>
-                            <td>10%</td>
-                        </tr>
-                        <tr>
-                            <td>考古盲盒</td>
-                            <td>娱乐产品</td>
-                            <td>50-100元</td>
-                            <td>高</td>
-                            <td>16%</td>
-                        </tr>
-                        <tr>
-                            <td>其他产品</td>
-                            <td>多种类别</td>
-                            <td>10-500元</td>
-                            <td>中低</td>
-                            <td>7%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <p>&copy; 2025 个人知识库 | 网络与新媒体专业</p>
+           
         </div>
-    </section>
+    </footer>
 
-    <!-- 文创产品展示 -->
-    <section id="cultural-products">
-        <div class="container">
-            <h2 class="section-title">文创产品展示</h2>
-            <p style="text-align: center; margin-bottom: 40px; color: var(--text-secondary);">三星堆文创产品突破1600种，单日销售额达60万元</p>
-            
-            <div class="products-grid">
-                <div class="product-card" data-product="bronze-figure">
-                    <img src="images/wenchuang1.jpg" alt="青铜小人麻将" class="product-img">
-                    <div class="product-info">
-                        <h3 class="product-title">青铜小人麻将礼盒</h3>
-                        <p>将三星堆青铜人像元素与传统麻将结合，创意十足，深受游客喜爱。</p>
-                    </div>
-                </div>
-
-                <div class="product-card" data-product="bronze-tree">
-                    <img src="images/wenchuang2.jpg" alt="神树摆件" class="product-img">
-                    <div class="product-info">
-                        <h3 class="product-title">神树摆件</h3>
-                        <p>精美复刻三星堆青铜神树，既是文创产品，也是家居装饰艺术品。</p>
-                    </div>
-                </div>
-
-                <div class="product-card" data-product="bronze-mask">
-                    <img src="images/wenchuang3.jpg" alt="面具冰淇淋" class="product-img">
-                    <div class="product-info">
-                        <h3 class="product-title">面具冰淇淋</h3>
-                        <p>以青铜面具为造型的冰淇淋，成为游客打卡拍照的热门单品。</p>
-                    </div>
-                </div>
-
-                <div class="product-card" data-product="human-bird">
-                    <img src="images/wenchuang4.jpg" alt="主神签" class="product-img">
-                    <div class="product-info">
-                        <h3 class="product-title">主神签</h3>
-                        <p>以人首鸟身像为设计灵感，将神秘古蜀图腾融入现代文具，传递千年文明智慧。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 文创产品原型文物弹窗 -->
-    <div id="product-modal" class="product-modal">
-        <div class="product-modal-content">
-            <div class="product-modal-header">
-                <h3 id="product-modal-title">文创产品原型</h3>
-                <span class="product-close">&times;</span>
-            </div>
-            <div class="product-modal-body">
-                <div class="product-original-image">
-                    <img id="product-original-img" src="" alt="原型文物">
-                </div>
-                <div class="product-original-info">
-                    <h4 id="product-original-name">原型文物名称</h4>
-                    <p id="product-original-description">原型文物描述</p>
-                    
-                    <div class="product-original-details">
-                        <div class="detail-item">
-                            <span class="detail-label">年代：</span>
-                            <span class="detail-value" id="product-original-era"></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">出土：</span>
-                            <span class="detail-value" id="product-original-excavation"></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">尺寸：</span>
-                            <span class="detail-value" id="product-original-size"></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">特点：</span>
-                            <span class="detail-value" id="product-original-features"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 终幕：生成你的报告 -->
-    <section id="report">
-        <div class="container">
-            <h2 class="section-title">选择你的文明守护者身份</h2>
-            
-            <div class="report-container">
-                <img src="images/end1.jpg" alt="神秘探索者报告" class="report-image active" id="report-1">
-                <img src="images/end3.jpg" alt="文化传承者报告" class="report-image" id="report-2">
-                <img src="images/end2.jpg" alt="文创爱好者报告" class="report-image" id="report-3">
-                
-                <div class="report-btns">
-                    <button class="report-btn" data-report="report-1">神秘探索者</button>
-                    <button class="report-btn" data-report="report-2">文化传承者</button>
-                    <button class="report-btn" data-report="report-3">文创爱好者</button>
-                </div>
-                
-                <button class="guardian-btn">
-                    成为第10,000,001位守护人
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" fill="currentColor"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- 守护仪式弹窗 -->
-    <div id="guardian-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>守护仪式</h3>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="ritual-animation">
-                    <div class="bronze-pattern"></div>
-                    <div class="particle-effect"></div>
-                    <div class="mask-icon">🎭</div>
-                </div>
-                <div class="ritual-text">
-                    <h4>第 10,000,001 位守护人</h4>
-                    <p>您已正式成为三星堆文明的守护者</p>
-                    <p class="ritual-quote">"一眼三千年，守护文明之火"</p>
-                </div>
-                <div class="guardian-info">
-                    <div class="info-item">
-                        <span class="label">守护编号:</span>
-                        <span class="value">SSD-10,000,001</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">守护时间:</span>
-                        <span class="value" id="current-time"></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">守护誓言:</span>
-                        <span class="value">传承文明，守护历史</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="ritual-confirm">确认守护</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
-        // 初始化AOS动画库
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({
-                duration: 1000,
-                once: true,
-                offset: 100
-            });
-            
-            // 打字机效果
-            const typewriterText = document.getElementById('typewriter-text');
-            const text = "任务编号: SSD-2025-001\n身份认证: 三星堆文化传播中心 - 特邀调查员\n任务目标: 探究「三星堆青铜面具」破圈现象与文化传播新范式。\n\n请点击下方按钮开始调查...";
-            let i = 0;
-            
-            function typeWriter() {
-                if (i < text.length) {
-                    if (text.charAt(i) === '\n') {
-                        typewriterText.innerHTML += '<br>';
-                    } else {
-                        typewriterText.innerHTML += text.charAt(i);
-                    }
-                    i++;
-                    setTimeout(typeWriter, 50);
-                }
-            }
-            
-            typeWriter();
-            
-            // 开始调查按钮
-            document.getElementById('start-btn').addEventListener('click', function() {
-                document.getElementById('artifact-intro').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // 选项卡切换
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // 移除所有active类
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                    
-                    // 添加active类到当前元素
-                    this.classList.add('active');
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // 延迟重绘图表，确保容器已显示
-                    setTimeout(() => {
-                        if (tabId === 'tab-2') {
-                            sunburstChart.resize();
-                        } else if (tabId === 'tab-3') {
-                            salesChart.resize();
-                            productChart.resize();
-                        }
-                    }, 100);
-                });
-            });
-            
-            // 报告切换
-            const reportBtns = document.querySelectorAll('.report-btn');
-            reportBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const reportId = this.getAttribute('data-report');
-                    
-                    // 隐藏所有报告
-                    document.querySelectorAll('.report-image').forEach(img => img.classList.remove('active'));
-                    
-                    // 显示选中的报告
-                    document.getElementById(reportId).classList.add('active');
-                });
-            });
-            
-            // 初始化图表
-            initCharts();
-            
-            // 新增：为分类指示器添加点击事件
-            const categoryIndicators = document.querySelectorAll('.category-indicator');
-            categoryIndicators.forEach(indicator => {
-                indicator.addEventListener('click', function() {
-                    const category = this.getAttribute('data-category');
-                    
-                    // 模拟点击旭日图中的对应区域
-                    const categoryNames = {
-                        'age': '年龄分布',
-                        'region': '地域分布',
-                        'content': '内容偏好',
-                        'platform': '平台偏好'
-                    };
-                    
-                    // 触发旭日图对应节点的点击事件
-                    sunburstChart.dispatchAction({
-                        type: 'sunburstHighlight',
-                        targetNodeId: categoryNames[category]
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
                     });
-                    
-                    // 更新UI状态
-                    updateUIState(category);
-                });
-            });
-        });
-        
-        // 定义旭日图和文创经济图表的变量
-        let sunburstChart, salesChart, productChart;
-        
-        // 新增：定义第二层分类的解析数据
-        const secondLevelInsights = {
-            '年龄分布': {
-                insight: '三星堆关注者年龄分布广泛，主要集中在25-40岁的中青年群体，占比超过65%，这一群体具有较高的文化消费能力和历史兴趣。',
-                behavior: ['• 18-35岁用户占比77%', '• 偏好互动性强的内容 (65%)', '• 关注考古过程与文物解读 (58%)'],
-                consumption: ['• 文创产品购买率: 32%', '• 年均文化消费: ¥800+', '• 社交媒体分享率: 70%']
-            },
-            '地域分布': {
-                insight: '关注者主要来自经济发达地区和历史文化名城，北上广深及新一线城市用户占比达64%，显示出地域经济发展水平与文化关注度的正相关性。',
-                behavior: ['• 一线和新一线城市用户占比64%', '• 热衷线下参观博物馆 (45%)', '• 关注国际文化交流 (38%)'],
-                consumption: ['• 文创产品购买率: 40%', '• 年均文化消费: ¥1000+', '• 旅游参观率: 55%']
-            },
-            '内容偏好': {
-                insight: '用户对考古发现、文物解读和文创衍生品等内容表现出强烈兴趣，特别是对青铜器工艺和古蜀文明神秘性的深度解读内容最受欢迎。',
-                behavior: ['• 考古发掘过程关注度最高 (42%)', '• 文物细节解读内容阅读完成率75%', '• 文创衍生品内容分享率65%'],
-                consumption: ['• 相关书籍购买率: 28%', '• 线上课程参与率: 35%', '• 文创产品购买率: 45%']
-            },
-            '平台偏好': {
-                insight: '用户通过多元平台获取三星堆信息，短视频平台和社交媒体占据主导地位，专业文博平台在深度用户中保持重要地位。',
-                behavior: ['• 短视频平台使用率75%', '• 社交媒体互动率60%', '• 专业文博平台使用率25%'],
-                consumption: ['• 直播购物率: 35%', '• 广告点击率: 42%', '• 付费内容购买率: 20%']
-            }
-        };
-        
-        // 新增：更新UI状态函数
-        function updateUIState(category) {
-            // 移除所有指示器的active类
-            document.querySelectorAll('.category-indicator').forEach(ind => ind.classList.remove('active'));
-            
-            // 为当前点击的指示器添加active类
-            document.querySelector(`.category-indicator[data-category="${category}"]`).classList.add('active');
-            
-            // 更新数据亮点
-            updateDataHighlights(category);
-        }
-        
-        // 新增：更新数据亮点函数
-        function updateDataHighlights(category) {
-            const highlightsData = {
-                'age': [
-                    { value: "65%", label: "25-40岁用户" },
-                    { value: "20%", label: "18-24岁用户" },
-                    { value: "15%", label: "40岁以上用户" }
-                ],
-                'region': [
-                    { value: "50%", label: "一线及历史文化名城" },
-                    { value: "28%", label: "四川省内用户" },
-                    { value: "8%", label: "海外用户" }
-                ],
-                'content': [
-                    { value: "42%", label: "关注考古过程" },
-                    { value: "35%", label: "偏好文物解读" },
-                    { value: "23%", label: "关注文创衍生" }
-                ],
-                'platform': [
-                    { value: "45%", label: "短视频平台" },
-                    { value: "30%", label: "社交媒体" },
-                    { value: "15%", label: "专业文博平台" }
-                ]
-            };
-            
-            const dataHighlights = document.querySelector('.data-highlights');
-            const highlights = highlightsData[category] || highlightsData['age'];
-            
-            let highlightsHTML = '';
-            highlights.forEach(highlight => {
-                highlightsHTML += `
-                    <div class="data-item">
-                        <div class="data-value">${highlight.value}</div>
-                        <div class="data-label">${highlight.label}</div>
-                    </div>
-                `;
-            });
-            
-            dataHighlights.innerHTML = highlightsHTML;
-        }
-        
-        function initCharts() {
-            // 平台分布饼图 - 修改为各平台话题量
-            const platformChart = echarts.init(document.getElementById('platform-chart'));
-            platformChart.setOption({
-                title: {
-                    text: '各平台话题量',
-                    left: '5%',
-                    textStyle: {
-                        color: '#cccccc'
-                    }
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function(params) {
-                        return `${params.name}<br/>话题量: ${params.value}万<br/>占比: ${params.percent}%`;
-                    }
-                },
-                series: [{
-                    name: '平台话题量',
-                    type: 'pie',
-                    radius: '70%',
-                    data: [
-                        { value: 3500, name: '抖音', itemStyle: { color: '#d4af37' } },
-                        { value: 2500, name: 'B站', itemStyle: { color: '#78866b' } },
-                        { value: 2000, name: '微博', itemStyle: { color: '#8c7853' } },
-                        { value: 1500, name: '微信', itemStyle: { color: '#7eb6c3' } },
-                        { value: 500, name: '其他', itemStyle: { color: '#4e4e6a' } }
-                    ],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    },
-                    label: {
-                        color: '#cccccc',
-                        formatter: '{b}: {d}%'
-                    }
-                }]
-            });
-            
-            // 词云图
-            const wordcloudChart = echarts.init(document.getElementById('wordcloud-chart'));
-            wordcloudChart.setOption({
-                title: {
-                    text: '热门话题',
-                    left: '5%',
-                    textStyle: {
-                        color: '#cccccc'
-                    }
-                },
-                tooltip: {
-                    show: true
-                },
-                series: [{
-                    type: 'wordCloud',
-                    shape: 'circle',
-                    left: 'center',
-                    top: 'center',
-                    width: '90%',
-                    height: '90%',
-                    sizeRange: [12, 40],
-                    rotationRange: [-45, 45],
-                    rotationStep: 5,
-                    gridSize: 8,
-                    drawOutOfBound: false,
-                    textStyle: {
-                        color: function () {
-                            return ['#d4af37', '#78866b', '#8c7853', '#7eb6c3', '#4e4e6a'][
-                                Math.floor(Math.random() * 5)
-                            ];
-                        }
-                    },
-                    emphasis: {
-                        focus: 'self',
-                        textStyle: {
-                            shadowBlur: 10,
-                            shadowColor: '#333'
-                        }
-                    },
-                    data: [
-                        { name: '神秘', value: 100 },
-                        { name: '三星堆', value: 95 },
-                        { name: '文化', value: 90 },
-                        { name: '考古', value: 85 },
-                        { name: '震撼', value: 80 },
-                        { name: '文明', value: 75 },
-                        { name: '青铜', value: 70 },
-                        { name: '面具', value: 65 },
-                        { name: '古蜀', value: 60 },
-                        { name: '创意', value: 55 },
-                        { name: '文创', value: 50 },
-                        { name: '历史', value: 45 },
-                        { name: '传承', value: 40 },
-                        { name: '国宝', value: 35 },
-                        { name: '顶流', value: 30 }
-                    ]
-                }]
-            });
-            
-            // 用户画像旭日图
-            sunburstChart = echarts.init(document.getElementById('sunburst-chart'));
-            const sunburstOption = {
-                title: {
-                    text: '用户画像旭日图',
-                    left: '3%',
-                    textStyle: {
-                        color: '#cccccc',
-                        fontSize: 16
-                    }
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function (params) {
-                        const value = params.value || 0;
-                        return `${params.name}<br/>占比: ${value}%`;
-                    }
-                },
-                series: {
-                    type: 'sunburst',
-                    radius: ['10%', '75%'],
-                    center: ['50%', '48%'],
-                    data: [
-                        {
-                            name: '用户画像',
-                            itemStyle: { color: '#d4af37' },
-                            children: [
-                                {
-                                    name: '年龄分布',
-                                    itemStyle: { color: '#78866b' },
-                                    children: [
-                                        { name: '18-25岁', value: 32, itemStyle: { color: '#9caf88' } },
-                                        { name: '26-35岁', value: 45, itemStyle: { color: '#78866b' } },
-                                        { name: '36-45岁', value: 15, itemStyle: { color: '#5c6b4f' } },
-                                        { name: '45岁以上', value: 8, itemStyle: { color: '#3f4a35' } }
-                                    ]
-                                },
-                                {
-                                    name: '地域分布',
-                                    itemStyle: { color: '#8c7853' },
-                                    children: [
-                                        { name: '北上广深', value: 28, itemStyle: { color: '#b39f7a' } },
-                                        { name: '新一线城市', value: 36, itemStyle: { color: '#8c7853' } },
-                                        { name: '二线及以下', value: 36, itemStyle: { color: '#66543c' } }
-                                    ]
-                                },
-                                {
-                                    name: '内容偏好',
-                                    itemStyle: { color: '#7eb6c3' },
-                                    children: [
-                                        { name: '考古发掘过程', value: 42, itemStyle: { color: '#a6d4e0' } },
-                                        { name: '文物细节解读', value: 35, itemStyle: { color: '#7eb6c3' } },
-                                        { name: '文创衍生品', value: 23, itemStyle: { color: '#4f8a9c' } }
-                                    ]
-                                },
-                                {
-                                    name: '平台偏好',
-                                    itemStyle: { color: '#9d8cba' },
-                                    children: [
-                                        { name: '短视频平台', value: 45, itemStyle: { color: '#c5b8db' } },
-                                        { name: '社交媒体', value: 30, itemStyle: { color: '#9d8cba' } },
-                                        { name: '文博平台', value: 15, itemStyle: { color: '#75668f' } },
-                                        { name: '其他平台', value: 10, itemStyle: { color: '#524766' } }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    label: {
-                        rotate: 'radial',
-                        color: '#ffffff'
-                    },
-                    levels: [
-                        {},
-                        {
-                            r0: '15%',
-                            r: '35%',
-                            itemStyle: {
-                                borderWidth: 2,
-                                borderColor: '#0a0a14'
-                            },
-                            label: {
-                                rotate: 'tangential',
-                                fontSize: 14
-                            }
-                        },
-                        {
-                            r0: '35%',
-                            r: '65%',
-                            label: {
-                                align: 'right',
-                                fontSize: 12
-                            }
-                        },
-                        {
-                            r0: '65%',
-                            r: '67%',
-                            label: {
-                                position: 'outside',
-                                padding: 3,
-                                silent: false
-                            },
-                            itemStyle: {
-                                borderWidth: 3
-                            }
-                        }
-                    ]
-                }
-            };
-
-            sunburstChart.setOption(sunburstOption);
-
-            // 用户画像详细解读内容
-            const insights = {
-                '18-25岁': {
-                    insight: 'Z世代用户，对神秘文化和视觉冲击力强的内容最感兴趣',
-                    behavior: ['• 偏好短视频内容 (65%)', '• 热衷互动讨论 (48%)', '• 关注新奇创意 (55%)'],
-                    consumption: ['• 文创产品购买率: 35%', '• 年均文化消费: ¥600+', '• 社交媒体分享率: 80%']
-                },
-                '26-35岁': {
-                    insight: '主力消费群体，关注文化内涵且具备消费能力',
-                    behavior: ['• 偏好深度解读内容 (55%)', '• 热衷分享转发 (40%)', '• 关注文物历史背景 (60%)'],
-                    consumption: ['• 文创产品购买率: 45%', '• 年均文化消费: ¥1000+', '• 社交媒体分享率: 70%']
-                },
-                '36-45岁': {
-                    insight: '深度文化爱好者，偏好历史解读和专业知识',
-                    behavior: ['• 偏好专业解读 (70%)', '• 热衷线下参观 (45%)', '• 关注学术研究 (65%)'],
-                    consumption: ['• 文创产品购买率: 38%', '• 年均文化消费: ¥1200+', '• 推荐给亲友率: 60%']
-                },
-                '45岁以上': {
-                    insight: '传统文化守护者，关注文明传承和教育意义',
-                    behavior: ['• 偏好传统媒体 (60%)', '• 热衷文化传承 (55%)', '• 关注教育意义 (75%)'],
-                    consumption: ['• 文创产品购买率: 25%', '• 年均文化消费: ¥500+', '• 家庭参观率: 70%']
-                },
-                '北上广深': {
-                    insight: '高知高收入群体，文化消费意愿强烈',
-                    behavior: ['• 偏好高品质内容 (68%)', '• 热衷社交分享 (52%)', '• 关注国际视野 (58%)'],
-                    consumption: ['• 文创产品购买率: 50%', '• 年均文化消费: ¥1500+', '• 重复参观率: 45%']
-                },
-                '新一线城市': {
-                    insight: '年轻活跃用户，社交媒体传播主力',
-                    behavior: ['• 偏好社交互动 (62%)', '• 热衷打卡分享 (55%)', '• 关注潮流趋势 (48%)'],
-                    consumption: ['• 文创产品购买率: 42%', '• 年均文化消费: ¥900+', '• 社交媒体分享率: 75%']
-                },
-                '二线及以下': {
-                    insight: '新兴市场，对国潮文化接受度高',
-                    behavior: ['• 偏好通俗内容 (45%)', '• 热衷家庭出游 (60%)', '• 关注性价比 (52%)'],
-                    consumption: ['• 文创产品购买率: 30%', '• 年均文化消费: ¥600+', '• 推荐给亲友率: 55%']
-                },
-                '考古发掘过程': {
-                    insight: '偏好真实感和参与感，关注考古现场',
-                    behavior: ['• 关注直播内容 (72%)', '• 热衷科学探索 (65%)', '• 偏好纪实风格 (58%)'],
-                    consumption: ['• 考古书籍购买率: 40%', '• 纪录片观看率: 85%', '• 专业App使用率: 35%']
-                },
-                '文物细节解读': {
-                    insight: '深度用户，关注工艺技术和历史背景',
-                    behavior: ['• 关注细节解析 (78%)', '• 热衷历史研究 (62%)', '• 偏好专业内容 (70%)'],
-                    consumption: ['• 专业书籍购买率: 45%', '• 线上课程参与率: 38%', '• 博物馆会员率: 25%']
-                },
-                '文创衍生品': {
-                    insight: '年轻女性为主，注重实用性和设计感',
-                    behavior: ['• 关注产品设计 (68%)', '• 热衷购物分享 (55%)', '• 偏好实用物品 (62%)'],
-                    consumption: ['• 文创产品购买率: 65%', '• 年均文创消费: ¥800+', '• 礼品购买率: 40%']
-                },
-                '短视频平台': {
-                    insight: '内容消费主力，偏好视觉化、碎片化信息',
-                    behavior: ['• 日均使用2h+ (75%)', '• 热衷点赞评论 (68%)', '• 关注热门话题 (72%)'],
-                    consumption: ['• 直播购物率: 35%', '• 网红推荐影响度: 60%', '• 冲动消费率: 45%']
-                },
-                '社交媒体': {
-                    insight: '话题参与度高，热衷互动讨论',
-                    behavior: ['• 日均发帖2-5条 (58%)', '• 热衷话题讨论 (65%)', '• 关注热点事件 (70%)'],
-                    consumption: ['• 广告点击率: 42%', '• 品牌关注度: 55%', '• 社交电商购买率: 38%']
-                },
-                '专业文博平台': {
-                    insight: '深度爱好者，关注学术研究和专业解读',
-                    behavior: ['• 日均使用1h+ (45%)', '• 热衷知识学习 (78%)', '• 关注学术动态 (65%)'],
-                    consumption: ['• 付费内容购买率: 35%', '• 专业书籍购买率: 52%', '• 会员服务订阅率: 28%']
-                }
-            };
-
-            // 添加点击交互 - 增强版
-            sunburstChart.on('click', function (params) {
-                const categoryEl = document.getElementById('selected-category');
-                const valueEl = document.getElementById('selected-value');
-                const insightEl = document.getElementById('selected-insight');
-                
-                // 更新UI状态
-                let category = '';
-                if (params.name.includes('年龄') || params.name.includes('岁')) {
-                    category = 'age';
-                } else if (params.name.includes('地域') || params.name.includes('城市')) {
-                    category = 'region';
-                } else if (params.name.includes('内容') || params.name.includes('偏好')) {
-                    category = 'content';
-                } else if (params.name.includes('平台')) {
-                    category = 'platform';
-                }
-                
-                if (category) {
-                    updateUIState(category);
-                }
-                
-                const data = insights[params.name];
-                if (data) {
-                    categoryEl.textContent = params.name;
-                    valueEl.textContent = `占比: ${params.value || '--'}%`;
-                    insightEl.textContent = data.insight;
-                    
-                    // 更新行为特点
-                    if (data.behavior) {
-                        for (let i = 0; i < 3; i++) {
-                            const behaviorEl = document.getElementById(`behavior-${i+1}`);
-                            if (behaviorEl && data.behavior[i]) {
-                                behaviorEl.textContent = data.behavior[i];
-                            }
-                        }
-                    }
-                    
-                    // 更新消费特征
-                    if (data.consumption) {
-                        for (let i = 0; i < 3; i++) {
-                            const consumptionEl = document.getElementById(`consumption-${i+1}`);
-                            if (consumptionEl && data.consumption[i]) {
-                                consumptionEl.textContent = data.consumption[i];
-                            }
-                        }
-                    }
-                } else {
-                    // 处理第二层分类的点击（如"年龄分布"、"地域分布"等）
-                    const secondLevelData = secondLevelInsights[params.name];
-                    if (secondLevelData) {
-                        categoryEl.textContent = params.name;
-                        valueEl.textContent = '点击具体分类查看详细数据';
-                        insightEl.textContent = secondLevelData.insight;
-                        
-                        // 更新行为特点
-                        if (secondLevelData.behavior) {
-                            for (let i = 0; i < 3; i++) {
-                                const behaviorEl = document.getElementById(`behavior-${i+1}`);
-                                if (behaviorEl && secondLevelData.behavior[i]) {
-                                    behaviorEl.textContent = secondLevelData.behavior[i];
-                                }
-                            }
-                        }
-                        
-                        // 更新消费特征
-                        if (secondLevelData.consumption) {
-                            for (let i = 0; i < 3; i++) {
-                                const consumptionEl = document.getElementById(`consumption-${i+1}`);
-                                if (consumptionEl && secondLevelData.consumption[i]) {
-                                    consumptionEl.textContent = secondLevelData.consumption[i];
-                                }
-                            }
-                        }
-                    } else {
-                        categoryEl.textContent = '请点击图表区域查看';
-                        valueEl.textContent = '-';
-                        insightEl.textContent = '-';
-                    }
-                }
-            });
-
-            // 设置默认显示内容
-            setTimeout(() => {
-                document.getElementById('selected-category').textContent = '用户画像';
-                document.getElementById('selected-value').textContent = '点击不同区域探索';
-                document.getElementById('selected-insight').textContent = '多层次分析用户特征';
-                
-                // 默认显示年龄分布的数据亮点
-                updateDataHighlights('age');
-                updateUIState('age');
-            }, 1000);
-            
-            // 销售数据图
-            salesChart = echarts.init(document.getElementById('sales-chart'));
-            salesChart.setOption({
-                title: {
-                    text: '文创销售增长趋势',
-                    left: 'center',
-                    textStyle: {
-                        color: '#cccccc'
-                    }
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['2021', '2022', '2023', '2024'],
-                    axisLine: {
-                        lineStyle: {
-                            color: '#cccccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#cccccc'
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '销售额（万元）',
-                    axisLine: {
-                        lineStyle: {
-                            color: '#cccccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#cccccc'
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(204, 204, 204, 0.2)'
-                        }
-                    }
-                },
-                series: [{
-                    name: '销售额',
-                    data: [1200, 3500, 5200, 6000],
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#d4af37'
-                    },
-                    barWidth: '40%',
-                    emphasis: {
-                        focus: 'series'
-                    }
-                }]
-            });
-            
-            // 产品类型分布图
-            productChart = echarts.init(document.getElementById('product-chart'));
-            productChart.setOption({
-                title: {
-                    text: '文创产品类型分布',
-                    left: 'center',
-                    textStyle: {
-                        color: '#cccccc'
-                    }
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['文具', '服饰', '家居', '食品', '其他'],
-                    axisLine: {
-                        lineStyle: {
-                            color: '#cccccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#cccccc'
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '销量占比(%)',
-                    axisLine: {
-                        lineStyle: {
-                            color: '#cccccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#cccccc'
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(204, 204, 204, 0.2)'
-                        }
-                    }
-                },
-                series: [{
-                    name: '销量占比',
-                    data: [30, 25, 20, 15, 10],
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#d4af37'
-                    },
-                    barWidth: '40%'
-                }]
-            });
-
-            // 响应窗口调整大小
-            window.addEventListener('resize', function() {
-                platformChart.resize();
-                wordcloudChart.resize();
-                sunburstChart.resize();
-                salesChart.resize();
-                productChart.resize();
-            });
-        }
-
-        // 文创产品原型数据
-        const productOriginals = {
-            'bronze-figure': {
-                name: '青铜立人像',
-                image: 'images/青铜立人像.jpg',
-                description: '青铜立人像是三星堆遗址出土的著名青铜器之一，高172厘米，重180公斤，是现存最高、最完整的青铜立人像。',
-                era: '商代晚期（约公元前1600-前1046年）',
-                excavation: '四川广汉三星堆遗址二号祭祀坑',
-                size: '高172cm，基座高90cm',
-                features: '头戴高冠，身着三层华服，双手环握中空，神态庄重威严，可能是古蜀国最高统治者的形象。',
-                link: '#'
-            },
-            'bronze-tree': {
-                name: '青铜神树',
-                image: 'images/青铜神树.jpg',
-                description: '青铜神树是三星堆遗址出土的最具代表性的青铜器之一，由底座、树身和龙三部分组成，反映了古蜀人独特的宇宙观和神话信仰。',
-                era: '商代晚期（约公元前1600-前1046年）',
-                excavation: '四川广汉三星堆遗址二号祭祀坑',
-                size: '残高396cm',
-                features: '树分三层，每层三枝，枝上立神鸟；树侧有一条缘树逶迤而下的神龙，体现了古蜀人对太阳和生命之树的崇拜。',
-                link: '#'
-            },
-            'bronze-mask': {
-                name: '青铜纵目面具',
-                image: 'images/初识.jpg',
-                description: '青铜纵目面具是三星堆最具代表性的文物之一，造型夸张神秘，双眼呈柱状向前凸出，双耳向两侧展开，体现了古蜀人独特的审美和宗教信仰。',
-                era: '商代晚期（约公元前1600-前1046年）',
-                excavation: '四川广汉三星堆遗址二号祭祀坑',
-                size: '宽度：132cm，高度：71cm，纵深：90cm',
-                features: '面具双眼呈柱状向前凸出16.5厘米，双耳向两侧展开，额部正中有一方孔，可能是古蜀人祭祀活动中使用的神器。',
-                link: '#'
-            },
-            'human-bird': {
-                name: '人首鸟身像',
-                image: 'images/人首鸟身像.jpg',
-                description: '人首鸟身像是三星堆文化中极具特色的青铜造像，融合了人类与鸟类的特征，体现了古蜀人独特的宗教信仰和神话想象。',
-                era: '商代晚期（约公元前1600-前1046年）',
-                excavation: '四川广汉三星堆遗址二号祭祀坑',
-                size: '高约40cm，宽约30cm',
-                features: '人面鸟身，头戴冠饰，面部表情庄重，鸟身造型优美，翅膀刻画精细，可能是古蜀神话中的神祇或图腾象征。',
-                link: '#'
-            }
-        };
-
-        // 文创产品弹窗交互
-        document.addEventListener('DOMContentLoaded', function() {
-            // 获取弹窗元素
-            const productModal = document.getElementById('product-modal');
-            const productClose = document.querySelector('.product-close');
-            const productCards = document.querySelectorAll('.product-card');
-            
-            // 点击产品卡片打开弹窗
-            productCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-product');
-                    const productData = productOriginals[productId];
-                    
-                    if (productData) {
-                        // 填充弹窗内容
-                        document.getElementById('product-modal-title').textContent = '文创产品原型：' + productData.name;
-                        document.getElementById('product-original-img').src = productData.image;
-                        document.getElementById('product-original-img').alt = productData.name;
-                        document.getElementById('product-original-name').textContent = productData.name;
-                        document.getElementById('product-original-description').textContent = productData.description;
-                        document.getElementById('product-original-era').textContent = productData.era;
-                        document.getElementById('product-original-excavation').textContent = productData.excavation;
-                        document.getElementById('product-original-size').textContent = productData.size;
-                        document.getElementById('product-original-features').textContent = productData.features;
-                        
-                        // 显示弹窗
-                        productModal.style.display = 'block';
-                    }
-                });
-            });
-            
-            // 点击关闭按钮关闭弹窗
-            productClose.addEventListener('click', function() {
-                productModal.style.display = 'none';
-            });
-            
-            // 点击弹窗外部关闭弹窗
-            window.addEventListener('click', function(event) {
-                if (event.target === productModal) {
-                    productModal.style.display = 'none';
                 }
             });
         });
 
-        // 守护仪式功能
-        document.querySelector('.guardian-btn').addEventListener('click', function() {
-            const modal = document.getElementById('guardian-modal');
-            modal.style.display = 'block';
+        // 卡片悬停效果增强
+        document.querySelectorAll('.tool-item, .feature-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
             
-            // 设置当前时间
-            const now = new Date();
-            document.getElementById('current-time').textContent = now.toLocaleString('zh-CN');
-            
-            // 创建粒子效果
-            createParticles();
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
         });
 
-        // 关闭弹窗
-        document.querySelector('.close').addEventListener('click', function() {
-            document.getElementById('guardian-modal').style.display = 'none';
-        });
-
-        // 确认守护按钮
-        document.querySelector('.ritual-confirm').addEventListener('click', function() {
-            const modal = document.getElementById('guardian-modal');
-            modal.style.display = 'none';
-            
-            // 可以在这里添加其他确认后的操作，比如发送数据到服务器等
-            alert('感谢您成为三星堆文明的守护者！');
-        });
-
-        // 点击弹窗外部关闭
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('guardian-modal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
             }
         });
-
-        // 创建粒子效果
-        function createParticles() {
-            const container = document.querySelector('.particle-effect');
-            container.innerHTML = ''; // 清空现有粒子
-            
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // 随机位置
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
-                particle.style.left = `${left}%`;
-                particle.style.top = `${top}%`;
-                
-                // 随机延迟
-                const delay = Math.random() * 3;
-                particle.style.animationDelay = `${delay}s`;
-                
-                container.appendChild(particle);
-            }
-        }
     </script>
 </body>
-
 </html>

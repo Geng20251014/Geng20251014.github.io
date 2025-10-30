@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma使用技巧 - 个人知识库</title>
+    <style>
+        /* 全局样式 - 与首页保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 英雄区域 */
+        /* 英雄区域 */
+         .hero {
+    background: url('images/hero-bg4.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative; /* 添加这行，为遮罩层做准备 */
+}
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* 技巧卡片样式 */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .skill-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid #9d6bff;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: #9d6bff;
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+        }
+        
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .card-body.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .skill-list .icon {
+            color: var(--accent-color);
+            margin-right: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .skill-content {
+            flex-grow: 1;
+        }
+        
+        .skill-content strong {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: var(--secondary-color);
+        }
+        
+        .skill-content p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        /* 快捷键表格 */
+        .shortcuts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .shortcuts-table th, .shortcuts-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .shortcuts-table th {
+            background-color: #9d6bff;
+            color: white;
+        }
+        
+        .shortcuts-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .shortcuts-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .shortcut-key {
+            display: inline-block;
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 0 0.2rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* 工具推荐区域 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tool-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .tool-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #9d6bff;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.8rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .shortcuts-table {
+                font-size: 0.9rem;
+            }
+            
+            .shortcuts-table th, .shortcuts-table td {
+                padding: 0.8rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">个人<span>知识库</span></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="vscode.html">VS Code技巧</a></li>
+                    <li><a href="photoshop.html">PS技巧</a></li>
+                    <li><a href="figma.html" style="color: var(--primary-color);">Figma技巧</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>Figma 使用技巧</h1>
+            <p>掌握这些高效技巧，极大提升你的UI/UX设计效率和团队协作能力</p>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="container">
+        <!-- 设计效率技巧部分 -->
+        <section class="content-section">
+            <h2 class="section-title">设计效率技巧</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>组件与样式系统</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>组件库创建</strong>
+                                    <p>建立可复用的组件库，确保设计系统的一致性和高效性</p>
+                                    <p>创建主组件并发布到团队库，所有实例会自动同步更新。</p>
+                                    <p>使用变体功能管理组件的不同状态，如默认、悬停、激活等。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>样式系统</strong>
+                                    <p>创建颜色、文本和效果样式，实现快速一致的设计应用</p>
+                                    <p>定义颜色样式用于品牌色、语义色和功能色，确保色彩一致性。</p>
+                                    <p>创建文本样式管理字体、大小、行高和颜色，统一排版规范。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>自动布局</strong>
+                                    <p>使用自动布局创建响应式设计，适应不同内容和屏幕尺寸</p>
+                                    <p>自动布局可以自动调整元素间距和对齐，简化响应式设计。</p>
+                                    <p>结合约束条件，创建在不同容器尺寸下都能正常显示的组件。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>快速设计技巧</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>快捷键精通</strong>
+                                    <p>掌握核心快捷键，大幅提升设计操作效率</p>
+                                    <p>使用F快速创建框架，R创建矩形，O创建圆形，T创建文本。</p>
+                                    <p>Shift+A应用自动布局，Ctrl+Alt+K创建组件，Ctrl+Alt+/切换变体。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>插件生态</strong>
+                                    <p>利用丰富插件扩展功能，自动化重复性设计任务</p>
+                                    <p>使用Content Reel插件快速插入占位文本和图片。</p>
+                                    <p>利用Auto Layout插件增强自动布局功能，简化复杂布局创建。</p>
+                                </div>
+                            </li>
+                            <li>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>高级设计功能</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>原型设计与交互</strong>
+                                    <p>创建交互式原型，展示用户体验流程和界面交互</p>
+                                    <p>使用原型面板连接画板，定义过渡动画和交互触发条件。</p>
+                                    <p>设置智能动画过渡，创建流畅的界面状态转换效果。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>矢量网络编辑</strong>
+                                    <p>使用矢量网络创建复杂图标和形状，实现精确控制</p>
+                                    <p>矢量网络允许在单个形状内创建多个填充区域，简化图标设计。</p>
+                                    <p>使用钢笔工具和矢量点编辑，创建自定义形状和复杂路径。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>约束与响应式设计</strong>
+                                    <p>使用约束条件创建响应式设计，适配不同屏幕尺寸</p>
+                                    <p>设置左右约束实现水平拉伸，上下约束实现垂直拉伸。</p>
+                                    <p>结合自动布局和约束，创建完全响应式的界面组件。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队协作技巧部分 -->
+        <section class="content-section">
+            <h2 class="section-title">团队协作技巧</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>实时协作功能</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>多人实时编辑</strong>
+                                    <p>支持多人同时编辑同一文件，实时查看他人操作</p>
+                                    <p>每个协作者都有独特的游标和颜色标识，便于区分不同用户。</p>
+                                    <p>实时显示他人选择的对象和编辑操作，避免冲突和重复工作。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>评论与反馈</strong>
+                                    <p>使用评论功能收集反馈，直接在设计上进行讨论</p>
+                                    <p>在特定设计元素上添加评论，@提及团队成员获取反馈。</p>
+                                    <p>评论线程可以标记为已解决，跟踪反馈处理进度。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>版本历史</strong>
+                                    <p>查看和恢复文件历史版本，跟踪设计演变过程</p>
+                                    <p>自动保存每次更改，可以回溯到任意时间点的设计状态。</p>
+                                    <p>为重要里程碑创建命名版本，便于团队成员参考特定版本。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>文件与团队管理</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>团队库管理</strong>
+                                    <p>创建和管理团队库，确保设计系统的一致性</p>
+                                    <p>发布组件和样式到团队库，所有团队成员可以访问和使用。</p>
+                                    <p>设置更新通知，当库内容变更时团队成员会收到更新提示。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>权限控制</strong>
+                                    <p>设置不同访问权限，控制团队成员对文件的编辑能力</p>
+                                    <p>可以设置查看者、编辑者和管理员等不同权限级别。</p>
+                                    <p>对特定页面或组件设置更精细的权限控制，保护核心设计元素。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>项目组织</strong>
+                                    <p>使用项目和文件夹组织设计文件，提高团队工作效率</p>
+                                    <p>按产品模块或功能创建项目，便于团队成员查找相关文件。</p>
+                                    <p>使用描述性文件命名和封面图，提高文件识别度。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="card-header" onclick="toggleCard(this)">
+                        <h3>开发交接与交付</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="skill-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>设计标注</strong>
+                                    <p>使用标注功能为开发人员提供精确的设计规格</p>
+                                    <p>开发模式允许开发人员查看间距、尺寸、颜色值等详细信息。</p>
+                                    <p>自动生成CSS、iOS和Android代码片段，简化开发实现过程。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>资源导出</strong>
+                                    <p>批量导出设计资源，支持多种格式和分辨率</p>
+                                    <p>可以导出为PNG、JPG、SVG、PDF等多种格式，满足不同需求。</p>
+                                    <p>设置1x、2x、3x等不同分辨率导出，适配各种屏幕密度。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <div class="skill-content">
+                                    <strong>插件集成</strong>
+                                    <p>使用插件增强开发交接流程，自动化资源交付</p>
+                                    <p>使用Figma to HTML插件将设计转换为前端代码。</p>
+                                    <p>利用Storybook连接插件同步设计系统和代码组件库。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快捷键部分 -->
+        <section class="content-section">
+            <h2 class="section-title">常用快捷键</h2>
+            <table class="shortcuts-table">
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>Windows</th>
+                        <th>macOS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>创建框架</td>
+                        <td><span class="shortcut-key">F</span></td>
+                        <td><span class="shortcut-key">F</span></td>
+                    </tr>
+                    <tr>
+                        <td>创建矩形</td>
+                        <td><span class="shortcut-key">R</span></td>
+                        <td><span class="shortcut-key">R</span></td>
+                    </tr>
+                    <tr>
+                        <td>创建圆形</td>
+                        <td><span class="shortcut-key">O</span></td>
+                        <td><span class="shortcut-key">O</span></td>
+                    </tr>
+                    <tr>
+                        <td>创建文本</td>
+                        <td><span class="shortcut-key">T</span></td>
+                        <td><span class="shortcut-key">T</span></td>
+                    </tr>
+                    <tr>
+                        <td>应用自动布局</td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">A</span></td>
+                        <td><span class="shortcut-key">Shift</span>+<span class="shortcut-key">A</span></td>
+                    </tr>
+                    <tr>
+                        <td>创建组件</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">Alt</span>+<span class="shortcut-key">K</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">Opt</span>+<span class="shortcut-key">K</span></td>
+                    </tr>
+                    <tr>
+                        <td>切换变体</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">Alt</span>+<span class="shortcut-key">/</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">Opt</span>+<span class="shortcut-key">/</span></td>
+                    </tr>
+                    <tr>
+                        <td>复制样式</td>
+                        <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">Alt</span>+<span class="shortcut-key">C</span></td>
+                        <td><span class="shortcut-key">Cmd</span>+<span class="shortcut-key">Opt</span>+<span class="shortcut-key">C</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 插件推荐部分 -->
+        <section class="content-section">
+            <h2 class="section-title">推荐插件与资源</h2>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-icon">🔄</div>
+                    <h3>Content Reel</h3>
+                    <p>快速插入占位文本、图片和图标，提高设计效率</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">🎨</div>
+                    <h3>Unsplash</h3>
+                    <p>直接在Figma中搜索和插入高质量免费图片</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">📐</div>
+                    <h3>Auto Layout</h3>
+                    <p>增强自动布局功能，简化复杂布局创建</p>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon">🌐</div>
+                    <h3>Figma to HTML</h3>
+                    <p>将设计转换为前端代码，加速开发流程</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="vscode.html">VS Code技巧</a>
+                <a href="photoshop.html">PS技巧</a>
+                <a href="figma.html">Figma技巧</a>
+                <a href="about.html">关于</a>
+            </div>
+            <p>&copy; 2025 个人知识库 | 网络与新媒体专业</p>
+        </div>
+    </footer>
+
+    <script>
+        // 卡片折叠/展开功能
+        function toggleCard(header) {
+            const cardBody = header.nextElementSibling;
+            const toggleIcon = header.querySelector('.toggle-icon');
+            
+            cardBody.classList.toggle('collapsed');
+            
+            if (cardBody.classList.contains('collapsed')) {
+                toggleIcon.textContent = '▶';
+            } else {
+                toggleIcon.textContent = '▼';
+            }
+        }
+        
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 卡片悬停效果增强
+        document.querySelectorAll('.skill-card, .tool-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
